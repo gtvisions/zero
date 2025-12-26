@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Session 2 — AND Gate using NAND</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+    table { border-collapse: collapse; margin-top: 10px; }
+    table, th, td { border: 1px solid black; padding: 5px 10px; }
+    h1, h2, h3 { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>Session 2: AND Gate using NAND</h1>
+
+<h2>Objective</h2>
+<p>Build an AND gate using two NAND chips and understand every wire.</p>
+
+<h2>Think Physical, Not Code</h2>
+<p>This is not programming. This is describing wiring on a circuit board. Forget “code”. Imagine two NAND chips on a table.</p>
+
+<h3>Line 1</h3>
+<pre><code>Nand(a=a, b=b, out=n1);</code></pre>
+<p>Take a NAND chip, connect input pin a of this chip to input a of AND, input pin b to input b of AND. Take its output wire and name it <strong>n1</strong>.</p>
+
+<pre>
+a ───┐
+     NAND ─── n1
+b ───┘
+</pre>
+
+<h3>Line 2</h3>
+<pre><code>Nand(a=n1, b=n1, out=out);</code></pre>
+<p>This is a different physical NAND chip with pins a and b. Connect both inputs to the wire <strong>n1</strong> from NAND 1. Output is <strong>out</strong>.</p>
+
+<pre>
+a ───┐
+     │        ┌─────────┐
+     ├───────►│  NAND 1 │──── n1 ───┬────► a (NAND 2)
+     │        └─────────┘           │
+b ───┘                              └────► b (NAND 2)
+                                     ┌─────────┐
+                                     │  NAND 2 │──── out
+                                     └─────────┘
+</pre>
+
+<h2>HDL Code</h2>
+<p>Hardware Description Language (HDL) describes connections, not instructions.</p>
+<pre><code>
+CHIP And {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    Nand(a=a, b=b, out=n1);
+    Nand(a=n1, b=n1, out=out);
+}
+</code></pre>
+
+<h2>Action & Practice</h2>
+<p>Open <code>projects/01/And.hdl</code>, load <code>And.tst</code>, and click Run All. Observe the Chip panel:</p>
+
+<table>
+<tr><th>a</th><th>b</th><th>n1 (internal)</th><th>out</th></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+</table>
+
+<h2>Key Insights</h2>
+<ul>
+  <li>The first NAND creates <strong>n1</strong>. The second NAND flips it to produce <strong>out</strong>.</li>
+  <li>HDL = describing connections, not telling the computer what to do.</li>
+  <li>Think LEGO blocks + wires, not loops or variables.</li>
+</ul>
+
+<h2>Motivation</h2>
+<p>Never say bad about yourself while learning. Pain and challenge mean growth and transformation. You are improving every step.</p>
+
+</body>
+</html>
